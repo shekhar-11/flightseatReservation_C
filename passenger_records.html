@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Records</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Passenger Records</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact Number</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Seat Number</th>
+            <th>Booking Status</th>
+            <th>Fare</th>
+            <th>Seat Class</th>
+        </tr>
+    </table>
+
+    <script>
+        // JavaScript code to fetch and display passenger records
+        fetch('passenger_records.json')
+            .then(response => response.json())
+            .then(data => {
+                const records = data.records;
+                const tableBody = document.createElement('tbody');
+                
+                records.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.passengerName}</td>
+                        <td>${record.email}</td>
+                        <td>${record.contactNumber}</td>
+                        <td>${record.source}</td>
+                        <td>${record.destination}</td>
+                        <td>${record.seatNumber}</td>
+                        <td>${record.isBooked ? 'Booked' : 'Cancelled'}</td>
+                        <td>$${record.fare.toFixed(2)}</td>
+                        <td>${record.seatClass === 1 ? 'First Class' : (record.seatClass === 2 ? 'Economy Class' : 'Business Class')}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                document.querySelector('table').appendChild(tableBody);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
